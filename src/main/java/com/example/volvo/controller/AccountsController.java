@@ -25,6 +25,7 @@ public class AccountsController {
     public CommonResponse<?> updateAccount(@Valid @RequestBody UpdateAccountRequest updateAccountRequest) {
         accountsService.updateAccount(updateAccountRequest.getEmail(), updateAccountRequest.getStatus());
         return CommonResponse.ok();
+
     }
 
     @GetMapping("/queryAccount")
