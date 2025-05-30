@@ -38,6 +38,6 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             docker pull liqinghao123/volvo
-            docker stop old_container || true
-            docker rm old_container || true
-            docker run -d -p 8080:8080 --name old_container liqinghao123/volvo
+            docker stop volvo || true
+            docker rm volvo || true
+            docker run -d -p 8080:8080 --name volvo liqinghao123/volvo
