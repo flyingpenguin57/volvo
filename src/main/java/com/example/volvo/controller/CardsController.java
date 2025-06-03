@@ -2,6 +2,7 @@ package com.example.volvo.controller;
 
 import com.example.volvo.controller.request.UpdateCardRequest;
 import com.example.volvo.controller.response.CommonResponse;
+import com.example.volvo.controller.response.CreateCardResponse;
 import com.example.volvo.service.CardService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -17,20 +18,20 @@ public class CardsController {
     private CardService cardService;
 
     @PostMapping("/createCard")
-    public CommonResponse<String> createAccount() {
+    public CommonResponse<CreateCardResponse> createAccount() {
         String cardNumber = cardService.createCard();
-        return CommonResponse.ok(cardNumber);
+        return CommonResponse.ok(new CreateCardResponse(cardNumber));
     }
 
     @PostMapping("/assignCard")
     public CommonResponse<?> updateAccount(@Valid @RequestBody UpdateCardRequest updateCardRequest) {
-        cardService.assignCard(updateCardRequest.getCardNumber(), updateCardRequest.getEmail());
+        cardService.assignCard(updateCardRequest);
         return CommonResponse.ok();
     }
 
     @PostMapping("/changeCardStatus")
     public CommonResponse<?> changeCardStatus(@Valid @RequestBody UpdateCardRequest updateCardRequest) {
-        cardService.changeCardStatus(updateCardRequest.getCardNumber(), updateCardRequest.getActive());
+        cardService.changeCardStatus(updateCardRequest);
         return CommonResponse.ok();
     }
 }

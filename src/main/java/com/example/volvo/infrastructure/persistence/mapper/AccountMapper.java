@@ -1,7 +1,6 @@
-package com.example.volvo.repository.mapper;
+package com.example.volvo.infrastructure.persistence.mapper;
 
-import com.example.volvo.repository.entities.Account;
-import com.example.volvo.repository.entities.Card;
+import com.example.volvo.domain.model.Account;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -15,5 +14,5 @@ public interface AccountMapper {
     int update(Account account);
 
     @Select("SELECT * FROM accounts where email=#{email}")
-    Account selectByEmail(Account account);
+    Account selectByEmail(@Param("email") String email);
 }

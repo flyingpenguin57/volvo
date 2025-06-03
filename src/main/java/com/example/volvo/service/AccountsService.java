@@ -1,11 +1,14 @@
 package com.example.volvo.service;
 
+import com.example.volvo.controller.request.CreateAccountRequest;
+import com.example.volvo.controller.request.UpdateAccountRequest;
 import com.example.volvo.controller.response.AccountCardsResponse;
-import com.example.volvo.repository.entities.Account;
-import com.example.volvo.repository.entities.Card;
-import com.example.volvo.repository.mapper.AccountMapper;
-import com.example.volvo.repository.mapper.CardMapper;
-import com.example.volvo.utils.HashUtil;
+import com.example.volvo.domain.model.Account;
+import com.example.volvo.domain.model.Card;
+import com.example.volvo.domain.repository.AccountRepository;
+import com.example.volvo.domain.repository.CardRepository;
+import com.example.volvo.exceptions.BusinessException;
+import com.example.volvo.utils.AssertUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -14,40 +17,27 @@ import java.util.List;
 @Service
 public class AccountsService {
     @Resource
-    private AccountMapper accountMapper;
-
+    private AccountRepository accountRepository;
     @Resource
-    private CardMapper cardMapper;
+    private CardRepository cardRepository;
 
-
-    public void createAccount(String email, String username) {
-        Account accountDao = new Account();
-        accountDao.setEmail(email);
-        accountDao.setUsername(username);
-        accountMapper.insert(accountDao);
+    public void createAccount(CreateAccountRequest request) throws Exception {
+        Account accountByEmail = accountRepository.getAccountByEmail(request.getEmail());
+        AssertUtil.isNull(accountByEmail, BusinessException.AccountEmailExist);
+        Account account = Account.createNewAccount(request.getEmail(), request.getUsername());
+        accountRepository.createAccount(account);
     }
 
-    public void updateAccount(String email, int active) {
-        Account accountDao = new Account();
-        accountDao.setEmail(email);
-        accountDao.setActive(active);
-        accountMapper.update(accountDao);
+    public void changeStatusOfAccount(UpdateAccountRequest request) throws Exception {
+        Account accountByEmail = accountRepository.getAccountByEmail(request.getEmail());
+        AssertUtil.notNull(accountByEmail, BusinessException.EmailNotExist);
+        accountRepository.updateAccountStatus(request.getEmail(), request.getStatus());
     }
 
-    public AccountCardsResponse queryAccountCards(String email) {
-        Account account = new Account();
-        account.setEmail(email);
-        Account accountInfo = accountMapper.selectByEmail(account);
-
-        Card card = new Card();
-        card.setContractId(HashUtil.hashWithGuava(email));
-        List<Card> cards = cardMapper.selectByContractId(card);
-
-        AccountCardsResponse accountCardsResponse = new AccountCardsResponse();
-        accountCardsResponse.setCards(cards);
-        accountCardsResponse.setEmail(email);
-        accountCardsResponse.setActive(accountInfo.getActive());
-
-        return accountCardsResponse;
+    public AccountCardsResponse queryAccountCards(String email, int pageNumber, int pageSize) {
+        Account accountByEmail = accountRepository.getAccountByEmail(email);
+        AssertUtil.notNull(accountByEmail, BusinessException.EmailNotExist);
+        List<Card> cardsByEmail = cardRepository.getCardsByEmail(email, pageNumber * pageSize, pageSize);
+        return new AccountCardsResponse(accountByEmail.getEmail(), accountByEmail.getActive(), cardsByEmail);
     }
 }

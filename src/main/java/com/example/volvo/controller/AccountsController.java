@@ -16,20 +16,20 @@ public class AccountsController {
     private AccountsService accountsService;
 
     @PostMapping("/createAccount")
-    public CommonResponse<?> createAccount(@Valid @RequestBody CreateAccountRequest createAccountRequest) {
-        accountsService.createAccount(createAccountRequest.getEmail(), createAccountRequest.getUsername());
+    public CommonResponse<?> createAccount(@Valid @RequestBody CreateAccountRequest createAccountRequest) throws Exception {
+        accountsService.createAccount(createAccountRequest);
         return CommonResponse.ok();
     }
 
     @PostMapping("/updateAccount")
-    public CommonResponse<?> updateAccount(@Valid @RequestBody UpdateAccountRequest updateAccountRequest) {
-        accountsService.updateAccount(updateAccountRequest.getEmail(), updateAccountRequest.getStatus());
+    public CommonResponse<?> updateAccount(@Valid @RequestBody UpdateAccountRequest updateAccountRequest) throws Exception {
+        accountsService.changeStatusOfAccount(updateAccountRequest);
         return CommonResponse.ok();
     }
 
     @GetMapping("/queryAccount")
-    public CommonResponse<AccountCardsResponse> queryAccount(@RequestParam String email) {
-        AccountCardsResponse accountCardsResponse = accountsService.queryAccountCards(email);
+    public CommonResponse<AccountCardsResponse> queryAccount(@RequestParam String email, int pageNumber, int pageSize) {
+        AccountCardsResponse accountCardsResponse = accountsService.queryAccountCards(email, pageNumber, pageSize);
         return CommonResponse.ok(accountCardsResponse);
     }
 }

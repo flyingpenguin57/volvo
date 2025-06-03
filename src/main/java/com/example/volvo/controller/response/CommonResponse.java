@@ -18,6 +18,13 @@ public class CommonResponse<T> {
         return commonResponse;
     }
 
+    public static CommonResponse<?> error(String message) {
+        CommonResponse<?> commonResponse = new CommonResponse<>();
+        commonResponse.setSuccess(false);
+        commonResponse.setErrorMessage(message);
+        return commonResponse;
+    }
+
     public boolean isSuccess() {
         return success;
     }
