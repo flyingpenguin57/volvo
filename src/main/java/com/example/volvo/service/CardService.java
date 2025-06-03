@@ -1,43 +1,29 @@
 package com.example.volvo.service;
 
-import com.example.volvo.repository.entities.Card;
-import com.example.volvo.repository.mapper.CardMapper;
-import com.example.volvo.utils.HashUtil;
+import com.example.volvo.controller.request.UpdateCardRequest;
+import com.example.volvo.domain.model.Account;
+import com.example.volvo.domain.model.Card;
+import com.example.volvo.domain.repository.CardRepository;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CardService {
     @Resource
-    private CardMapper cardMapper;
+    private CardRepository cardRepository;
 
     public String createCard() {
-        Card card = new Card();
-        String cardNumber = String.valueOf(System.currentTimeMillis());
-        card.setCardNumber(cardNumber);
-        cardMapper.insert(card);
-        return cardNumber;
+        Card newCard = Card.createNewCard();
+        cardRepository.insert(newCard);
+        return newCard.getCardNumber();
     }
 
-    public void assignCard(String cardNumber, String email) {
-        Card card = new Card();
-        card.setCardNumber(cardNumber);
-        card.setContractId(HashUtil.hashWithGuava(email));
-        cardMapper.updateContractId(card);
+    public void assignCard(UpdateCardRequest request) {
+        String contractId = Account.getContractIdFromEmail(request.getEmail());
+        cardRepository.updateContractId(contractId, request.getCardNumber());
     }
 
-    public void changeCardStatus(String cardNumber, int active) {
-        Card card = new Card();
-        card.setCardNumber(cardNumber);
-        card.setActive(active);
-        cardMapper.updateStatus(card);
-    }
-
-    public List<Card> getCardsByAccount(String email) {
-        Card card = new Card();
-        card.setContractId(HashUtil.hashWithGuava(email));
-        return cardMapper.selectByContractId(card);
+    public void changeCardStatus(UpdateCardRequest request) {
+        cardRepository.updateCardStatus(request.getCardNumber(), request.getActive());
     }
 }

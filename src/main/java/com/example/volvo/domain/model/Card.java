@@ -1,10 +1,17 @@
-package com.example.volvo.repository.entities;
+package com.example.volvo.domain.model;
 
 public class Card {
     private long id;
     private String contractId;
     private String cardNumber;
     private int active;
+
+    public static Card createNewCard() {
+        Card card = new Card();
+        String cardNumber = String.valueOf(System.currentTimeMillis());
+        card.setCardNumber(cardNumber);
+        return card;
+    }
 
     public Card() {}
 

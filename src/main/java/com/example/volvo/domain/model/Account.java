@@ -1,10 +1,24 @@
-package com.example.volvo.repository.entities;
+package com.example.volvo.domain.model;
+
+import com.example.volvo.utils.HashUtil;
 
 public class Account {
     private long id;
     private String email;
     private String username;
     private int active;
+
+    public static Account createNewAccount(String email, String username) {
+        Account account = new Account();
+        account.setEmail(email);
+        account.setUsername(username);
+        return account;
+    }
+
+    public static String getContractIdFromEmail(String email) {
+       return HashUtil.hashWithGuava(email);
+    }
+
 
     public Account() {}
 

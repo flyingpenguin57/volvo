@@ -1,6 +1,6 @@
 package com.example.volvo.controller.response;
 
-import com.example.volvo.repository.entities.Card;
+import com.example.volvo.domain.model.Card;
 
 import java.util.List;
 
@@ -30,6 +30,12 @@ public class AccountCardsResponse {
     }
 
     public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public AccountCardsResponse(String email, int active, List<Card> cards) {
+        this.email = email;
+        this.active = active;
         this.cards = cards;
     }
 }
