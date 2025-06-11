@@ -10,11 +10,11 @@ import com.example.volvo.domain.repository.CardRepository;
 import com.example.volvo.exceptions.BizError;
 import com.example.volvo.utils.AssertUtil;
 import jakarta.annotation.Resource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Service
+@Component
 public class AccountsApplication {
     @Resource
     private AccountRepository accountRepository;
