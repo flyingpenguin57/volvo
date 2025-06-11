@@ -4,9 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
 public class UpdateAccountRequest {
-    @Email(message = "business error-email incorrect")
+    @Email(message = "business error: email incorrect")
     private String email;
-    @NotNull(message = "business error-status cannot be null")
+    @NotNull(message = "business error: status cannot be null")
     private int status;
 
     public @Email String getEmail() {

@@ -4,9 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class CreateAccountRequest {
-    @Email(message = "business error-email incorrect")
+    @Email(message = "param error: email incorrect")
     private String email;
-    @NotBlank(message = "business error-username cannot be null")
+    @NotBlank(message = "param error: username cannot be null")
     private String username;
 
     public @Email String getEmail() {

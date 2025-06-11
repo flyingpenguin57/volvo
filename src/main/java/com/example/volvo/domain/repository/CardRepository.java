@@ -35,4 +35,8 @@ public class CardRepository {
         String contractId = Account.getContractIdFromEmail(email);
         return cardMapper.selectByContractId(contractId, from, size);
     }
+
+    public Card getCardByCardNumber(String cardNumber) {
+        return cardMapper.selectCardByCardNumber(cardNumber);
+    }
 }

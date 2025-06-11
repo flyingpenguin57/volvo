@@ -20,4 +20,7 @@ public interface CardMapper {
 
     @Select("SELECT * FROM cards where contract_id=#{contractId} order by update_timestamp limit #{from},#{size}")
     List<Card> selectByContractId(@Param("contractId") String contractId,@Param("from") int from,@Param("size") int size);
+
+    @Select("SELECT * FROM cards where card_number=#{cardNumber}")
+    Card selectCardByCardNumber(@Param("cardNumber") String cardNumber);
 }

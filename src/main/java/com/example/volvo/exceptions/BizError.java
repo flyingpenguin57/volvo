@@ -2,7 +2,9 @@ package com.example.volvo.exceptions;
 
 public enum BizError {
     AccountEmailExist("0001", "email already exits!"),
-    EmailNotExist("0002", "email not exist!");
+    EmailNotExist("0002", "email not exist!"),
+    CardNotExist("0003", "card not exist!");
+    ;
 
     private String errorCode;
     private String errorMessage;
