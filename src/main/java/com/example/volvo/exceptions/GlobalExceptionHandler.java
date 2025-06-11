@@ -1,6 +1,8 @@
 package com.example.volvo.exceptions;
 
-import com.example.volvo.controller.response.CommonResponse;
+import com.example.volvo.api.response.Error;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,15 +15,24 @@ import java.util.Optional;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public CommonResponse<?> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
         Optional<FieldError> first = ex.getBindingResult().getFieldErrors().stream().filter(
                 e -> Objects.requireNonNull(e.getDefaultMessage()).contains("business error")
         ).findFirst();
-        return first.isPresent() ? CommonResponse.error(first.get().getDefaultMessage()) : CommonResponse.error("unknown error");
+        return first.map(fieldError -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldError.getDefaultMessage())).orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown error"));
+    }
+
+    @ExceptionHandler(BizException.class)
+    public ResponseEntity<Error> handleBizException(BizException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(new Error(ex.getBizError().getErrorCode(), ex.getBizError().getErrorMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public CommonResponse<?> handleException(Exception ex) {
-        return CommonResponse.error(ex.getMessage());
+    public ResponseEntity<String> handleException(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ex.getMessage());
     }
 }

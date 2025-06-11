@@ -1,4 +1,4 @@
-package com.example.volvo.controller.response;
+package com.example.volvo.api.response;
 
 public class CreateCardResponse {
     private String cardNumber;

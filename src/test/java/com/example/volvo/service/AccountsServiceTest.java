@@ -1,6 +1,7 @@
 package com.example.volvo.service;
 
-import com.example.volvo.controller.request.CreateAccountRequest;
+import com.example.volvo.api.request.CreateAccountRequest;
+import com.example.volvo.application.AccountsApplication;
 import com.example.volvo.domain.model.Account;
 import com.example.volvo.domain.repository.AccountRepository;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ public class AccountsServiceTest {
     private AccountRepository accountRepository;
 
     @InjectMocks
-    private AccountsService accountsService;
+    private AccountsApplication accountsService;
 
     @Test
     public void testCreateNewAccount() throws Exception {
