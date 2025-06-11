@@ -1,13 +1,13 @@
 package com.example.volvo.exceptions;
 
-public enum BusinessException {
+public enum BizError {
     AccountEmailExist("0001", "email already exits!"),
     EmailNotExist("0002", "email not exist!");
 
     private String errorCode;
     private String errorMessage;
 
-    BusinessException(String errorCode, String errorMessage) {
+    BizError(String errorCode, String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }

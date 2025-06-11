@@ -1,6 +1,6 @@
-package com.example.volvo.service;
+package com.example.volvo.application;
 
-import com.example.volvo.controller.request.UpdateCardRequest;
+import com.example.volvo.api.request.UpdateCardRequest;
 import com.example.volvo.domain.model.Account;
 import com.example.volvo.domain.model.Card;
 import com.example.volvo.domain.repository.CardRepository;
@@ -8,7 +8,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CardService {
+public class CardApplication {
     @Resource
     private CardRepository cardRepository;
 

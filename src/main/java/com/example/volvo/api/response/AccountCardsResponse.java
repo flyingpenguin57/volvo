@@ -1,4 +1,4 @@
-package com.example.volvo.controller.response;
+package com.example.volvo.api.response;
 
 import com.example.volvo.domain.model.Card;
 

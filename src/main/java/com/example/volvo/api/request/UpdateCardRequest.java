@@ -1,4 +1,4 @@
-package com.example.volvo.controller.request;
+package com.example.volvo.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 
