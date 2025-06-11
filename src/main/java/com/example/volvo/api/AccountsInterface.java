@@ -6,11 +6,15 @@ import com.example.volvo.api.response.AccountCardsResponse;
 import com.example.volvo.application.AccountsApplication;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/accounts")
+@Validated
 public class AccountsInterface {
     @Resource
     private AccountsApplication accountsApplication;
@@ -28,7 +32,11 @@ public class AccountsInterface {
     }
 
     @GetMapping("/queryAccount")
-    public ResponseEntity<AccountCardsResponse> queryAccount(@RequestParam String email, int pageNumber, int pageSize) {
+    public ResponseEntity<AccountCardsResponse> queryAccount(
+            @RequestParam
+            @NotBlank(message = "param error: email cannot be null")
+            @Email(message = "param error: email incorrect")
+            String email, int pageNumber, int pageSize) {
         AccountCardsResponse accountCardsResponse = accountsApplication.queryAccountCards(email, pageNumber, pageSize);
         return ResponseEntity.ok(accountCardsResponse);
     }
