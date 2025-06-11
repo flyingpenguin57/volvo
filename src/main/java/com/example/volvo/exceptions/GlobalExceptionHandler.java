@@ -17,9 +17,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
         Optional<FieldError> first = ex.getBindingResult().getFieldErrors().stream().filter(
-                e -> Objects.requireNonNull(e.getDefaultMessage()).contains("business error")
+                e -> Objects.requireNonNull(e.getDefaultMessage()).contains("param error")
         ).findFirst();
-        return first.map(fieldError -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldError.getDefaultMessage())).orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown error"));
+        return first.map(fieldError -> ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(fieldError.getDefaultMessage()))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown error"));
     }
 
     @ExceptionHandler(BizException.class)

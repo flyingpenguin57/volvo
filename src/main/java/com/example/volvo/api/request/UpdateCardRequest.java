@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class UpdateCardRequest {
     private String email;
-    @NotBlank(message = "business error-cardNumber cannot be null")
+    @NotBlank(message = "param error: cardNumber cannot be null")
     private String cardNumber;
     private int active;
 
