@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class CreateAccountRequest {
     @Email(message = "param error: email incorrect")
+    @NotBlank(message = "param error: email cannot be null")
     private String email;
     @NotBlank(message = "param error: username cannot be null")
     private String username;
