@@ -1,9 +1,9 @@
-package com.example.volvo.service;
+package com.example.volvo.application;
 
 import com.example.volvo.api.request.CreateAccountRequest;
-import com.example.volvo.application.AccountsApplication;
 import com.example.volvo.domain.model.Account;
 import com.example.volvo.domain.repository.AccountRepository;
+import com.example.volvo.exceptions.BizException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class AccountsServiceTest {
+public class AccountsApplicationTest {
 
     @Mock
     private AccountRepository accountRepository;
@@ -47,7 +47,8 @@ public class AccountsServiceTest {
         } catch (Exception e) {
             exception = true;
             assertNotNull(e);
-            assertEquals(e.getMessage(), "email already exits!");
+            assertInstanceOf(BizException.class, e);
+            assertEquals(((BizException) e).getBizError().getErrorMessage(), "email already exits!");
         }
         assertTrue(exception);
     }
